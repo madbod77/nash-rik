@@ -1,0 +1,627 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0f0d0c">
+<title>Наш рік</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="media/hero.jpg">
+<style>
+  :root{
+    --ink:#0f0d0c; --ink-2:#161311; --paper:#efe5d6; --paper-dim:#b4a895;
+    --cherry:#8e2b2b; --cherry-2:#c0503f; --gold:#d9a35b; --line:rgba(239,229,214,.13);
+    --serif:"Cormorant Garamond", Georgia, serif;
+    --mono:"JetBrains Mono", ui-monospace, monospace;
+    --ease:cubic-bezier(.2,.7,.1,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{background:var(--ink);color:var(--paper);font-family:var(--serif);font-size:20px;line-height:1.5;overflow-x:hidden}
+  body.locked{overflow:hidden;height:100svh}
+  img,video{display:block;max-width:100%}
+  button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+  .mono{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--paper-dim)}
+  .ph{background:rgba(192,80,63,.22);outline:1px dashed var(--cherry-2);padding:0 .2em;border-radius:3px}
+  em{font-style:italic;color:var(--cherry-2)}
+  .w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.08em;margin-bottom:-.08em}
+  .w > span{display:inline-block}
+  .ch{display:inline-block}
+
+  .grain{position:fixed;inset:-50%;pointer-events:none;z-index:80;opacity:.085;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation:grain 1.2s steps(6) infinite}
+  @keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-3%)}60%{transform:translate(-2%,-1%)}80%{transform:translate(3%,3%)}100%{transform:translate(0,0)}}
+  .progress{position:fixed;left:0;top:0;height:2px;width:100%;background:linear-gradient(90deg,var(--cherry),var(--cherry-2),var(--gold));transform-origin:left;transform:scaleX(0);z-index:90}
+
+  /* ===== ЗАСТАВКА ===== */
+  .gate{position:fixed;inset:0;z-index:100;display:grid;place-items:center;text-align:center}
+  .gate-half{position:absolute;left:0;right:0;height:50.5%;background:var(--ink)}
+  .gate-top{top:0}.gate-bot{bottom:0}
+  .gate-inner{position:relative;z-index:2;padding:0 16px}
+  .gate-inner .mono{display:block;margin-bottom:26px}
+  .gate h2{font-weight:400;font-size:clamp(56px,10vw,130px);line-height:.9}
+  .gate h2 em{display:block}
+  .gate-btn{margin:52px auto 0;width:120px;height:120px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;position:relative;transition:border-color .4s}
+  .gate-btn::before{content:"";position:absolute;inset:-1px;border-radius:50%;border:1px solid var(--cherry-2);animation:pulse 2.4s var(--ease) infinite}
+  .gate-btn:hover{border-color:var(--cherry-2)}
+  .gate-btn svg{width:30px;height:30px;fill:var(--cherry-2);animation:beat 1.2s ease-in-out infinite}
+  .gate-btn span{position:absolute;bottom:-34px;left:50%;transform:translateX(-50%);white-space:nowrap}
+  @keyframes pulse{0%{transform:scale(1);opacity:.9}100%{transform:scale(1.55);opacity:0}}
+  @keyframes beat{0%,100%{transform:scale(1)}15%{transform:scale(1.18)}30%{transform:scale(1)}45%{transform:scale(1.12)}}
+
+  /* ===== HERO ===== */
+  .hero{position:relative;height:100svh;min-height:560px;display:grid;grid-template-columns:1fr 1fr;align-items:end;overflow:hidden}
+  .hero-photo{position:absolute;left:0;top:0;bottom:0;width:58%;overflow:hidden}
+  .hero-photo img{width:100%;height:118%;object-fit:cover;object-position:50% 30%;filter:saturate(.92) contrast(1.05)}
+  .hero-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 50%,var(--ink) 100%),linear-gradient(0deg,rgba(15,13,12,.5),transparent 30%)}
+  .hero-text{grid-column:2;padding:0 6vw 13vh 2vw;position:relative;z-index:2}
+  .hero-text .mono{display:block;margin-bottom:26px}
+  .hero h1{font-weight:400;font-size:clamp(76px,12vw,190px);line-height:.84;letter-spacing:-.025em}
+  .hero h1 .l2{display:block;font-style:italic;color:var(--cherry-2);padding-left:.35em}
+  .hero p.lead{margin-top:30px;font-size:clamp(20px,2vw,27px);font-style:italic;color:var(--paper-dim);max-width:22ch}
+  .scroll-hint{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);z-index:3;text-align:center}
+  .scroll-hint i{display:block;width:1px;height:46px;margin:10px auto 0;background:linear-gradient(var(--paper),transparent);animation:drip 2s ease-in-out infinite}
+  @keyframes drip{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+  /* ===== ЧАС ===== */
+  .time{position:relative;padding:24vh 6vw 20vh;text-align:center;overflow:hidden}
+  .marquee{position:absolute;top:50%;left:0;white-space:nowrap;transform:translateY(-50%);font-size:clamp(140px,26vw,380px);line-height:1;font-style:italic;color:transparent;-webkit-text-stroke:1px rgba(239,229,214,.07);pointer-events:none;user-select:none}
+  .time .big{position:relative;font-size:clamp(130px,24vw,340px);line-height:.8;letter-spacing:-.035em;font-variant-numeric:tabular-nums}
+  .time .unit{position:relative;font-style:italic;font-size:clamp(28px,3.2vw,44px);color:var(--cherry-2);margin-top:12px}
+  .ticker{position:relative;margin-top:46px;display:inline-flex;gap:clamp(14px,3vw,34px);align-items:baseline;padding:16px 26px;border:1px solid var(--line);border-radius:999px;background:rgba(22,19,17,.6);backdrop-filter:blur(6px)}
+  .ticker b{font-weight:400;font-size:clamp(26px,3vw,40px);font-variant-numeric:tabular-nums;line-height:1}
+  .ticker small{margin-left:6px}
+  .time .sub{position:relative;margin:46px auto 0;max-width:30ch;color:var(--paper-dim);font-style:italic;font-size:clamp(21px,2.3vw,30px)}
+  .stats{position:relative;display:flex;justify-content:center;gap:clamp(30px,7vw,110px);margin-top:66px;flex-wrap:wrap}
+  .stats b{display:block;font-weight:400;font-size:clamp(40px,4.6vw,64px);line-height:1;margin-bottom:6px}
+
+  /* ===== ВІДСТАНЬ ===== */
+  .distance{display:grid;grid-template-columns:1.1fr .9fr;gap:6vw;align-items:center;padding:18vh 8vw;border-top:1px solid var(--line)}
+  .h2{font-weight:400;font-size:clamp(46px,6.2vw,96px);line-height:.95;letter-spacing:-.015em}
+  .distance p{margin-top:28px;max-width:34ch;color:var(--paper-dim);font-size:clamp(20px,1.7vw,24px)}
+  .route{margin-top:46px;width:100%;max-width:560px;overflow:visible}
+  .route .base{fill:none;stroke:rgba(239,229,214,.22);stroke-width:1.5;stroke-dasharray:3 9;stroke-linecap:round}
+  .route .draw{fill:none;stroke:var(--cherry-2);stroke-width:2.5;stroke-linecap:round}
+  .route circle{fill:var(--paper)}
+  .route text{font-family:var(--mono);font-size:13px;letter-spacing:.14em;fill:var(--paper-dim);text-transform:uppercase}
+  .route .heart path{fill:var(--cherry-2)}
+  .phone-wrap{justify-self:center;position:relative}
+  .phone{width:min(300px,68vw);border-radius:44px;padding:10px;background:#050404;box-shadow:0 0 0 1px #2a2522,0 40px 80px -30px rgba(0,0,0,.9),0 0 140px -30px rgba(192,80,63,.5)}
+  .phone img{border-radius:34px;width:100%;height:auto}
+  .ring{position:absolute;inset:-18px;border-radius:60px;border:1px solid var(--cherry-2);opacity:0;pointer-events:none}
+
+  /* ===== КАДРИ ===== */
+  .moments{position:relative;overflow:hidden;border-top:1px solid var(--line);background:var(--ink);z-index:2}
+  .moments-inner{height:100svh;display:flex;flex-direction:column;justify-content:center}
+  .moments header{padding:0 8vw;display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap}
+  .count{font-family:var(--mono);font-size:13px;letter-spacing:.16em;color:var(--paper-dim)}
+  .count b{color:var(--paper);font-weight:500}
+  .reel{display:flex;gap:clamp(22px,3vw,44px);padding:clamp(30px,6vh,60px) 8vw 10px;width:max-content;will-change:transform}
+  .frame{flex:0 0 auto;width:clamp(240px,30vw,400px);background:var(--paper);color:var(--ink);padding:12px 12px 16px;transform:rotate(var(--r,0deg));box-shadow:0 30px 60px -30px rgba(0,0,0,.9)}
+  .frame .img{aspect-ratio:4/5;overflow:hidden;background:#222}
+  .frame img{width:100%;height:100%;object-fit:cover;transform:scale(1.15)}
+  .frame figcaption{margin-top:12px;font-style:italic;font-size:clamp(18px,1.5vw,21px);line-height:1.25;min-height:1.25em}
+  .frame figcaption .mono{display:block;color:#7a6e60;font-style:normal;margin-bottom:6px;font-size:11px}
+  .static .reel{overflow-x:auto;width:auto;scroll-snap-type:x mandatory}
+  .static .frame{scroll-snap-align:center}
+  .static .frame img{transform:none}
+
+  /* ===== ТИ ===== */
+  .you{padding:14vh 6vw 20vh;border-top:1px solid var(--line);overflow:hidden}
+  .you-cols{display:grid;grid-template-columns:repeat(var(--cols,3),1fr);gap:clamp(12px,2vw,26px);max-width:1180px;margin:0 auto}
+  .col{display:flex;flex-direction:column;gap:clamp(12px,2vw,26px)}
+  .col:nth-child(2){padding-top:12vh}
+  .you figure{overflow:hidden;clip-path:inset(0 0 0 0)}
+  .you img{width:100%;height:auto;transform-origin:50% 50%}
+
+  /* ===== ВІДЕО ===== */
+  .clip{padding:18vh 8vw;display:grid;grid-template-columns:1fr auto;gap:6vw;align-items:center;background:var(--ink-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .vid{position:relative;width:min(340px,76vw);border-radius:22px;overflow:hidden;box-shadow:0 50px 90px -40px #000,0 0 0 1px #2a2522}
+  .vid video{width:100%}
+  .sound{position:absolute;right:12px;bottom:12px;display:flex;gap:8px;align-items:center;padding:9px 14px;border-radius:999px;background:rgba(15,13,12,.72);backdrop-filter:blur(6px);font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+  .sound i{width:8px;height:8px;border-radius:50%;background:var(--paper-dim)}
+  .sound.on i{background:var(--cherry-2);box-shadow:0 0 0 4px rgba(192,80,63,.25)}
+
+  /* ===== ЛИСТ ===== */
+  .letter{padding:22vh 6vw 18vh;text-align:center;position:relative}
+  .envelope{margin:60px auto 0;width:min(520px,88vw);aspect-ratio:3/2;position:relative;perspective:1200px;display:block}
+  .envelope .body{position:absolute;inset:0;background:#d9ccb8;border-radius:4px;box-shadow:0 40px 80px -40px #000;z-index:2}
+  .envelope .body::after{content:"";position:absolute;inset:0;background:linear-gradient(160deg,transparent 49.6%,rgba(0,0,0,.07) 50%),linear-gradient(200deg,transparent 49.6%,rgba(0,0,0,.07) 50%)}
+  .envelope .flap{position:absolute;left:0;right:0;top:0;height:58%;background:#cdbfa9;clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:top;z-index:4}
+  .envelope.open .flap{background:#bfb099}
+  .envelope .seal{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);width:68px;height:68px;border-radius:50%;background:radial-gradient(circle at 35% 30%,var(--cherry-2),var(--cherry) 70%);z-index:5;display:grid;place-items:center;font-style:italic;font-size:30px;color:#f3d9cf;box-shadow:0 4px 10px rgba(0,0,0,.4)}
+  .envelope .hint{position:absolute;left:0;right:0;bottom:-46px}
+  .envelope:not(.open) .seal{animation:beat 1.6s ease-in-out infinite}
+  .paper{max-width:640px;margin:0 auto;background:var(--paper);color:#2b211c;text-align:left;padding:0 clamp(26px,5vw,56px);height:0;overflow:hidden;font-size:clamp(20px,2vw,23px);line-height:1.6;box-shadow:0 40px 80px -40px #000;position:relative;z-index:3}
+  .paper p+p{margin-top:1em}
+  .paper .sign{margin-top:1.6em;font-style:italic;text-align:right}
+  .burst{position:absolute;pointer-events:none;z-index:20;font-size:22px;color:var(--cherry-2)}
+
+  /* ===== ФІНАЛ — СЕРЦЕ ===== */
+  .final{position:relative;height:100svh;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(18px,3vh,34px);border-top:1px solid var(--line);background:var(--ink);z-index:2}
+  .heartbox{position:relative;width:var(--S);height:var(--S)}
+  .hp{position:absolute;left:0;top:0;width:var(--T);height:var(--T);margin:calc(var(--T) / -2) 0 0 calc(var(--T) / -2);overflow:hidden;border:3px solid var(--paper);border-radius:3px;box-shadow:0 12px 24px -10px rgba(0,0,0,.8);background:#222}
+  .hp img{width:100%;height:100%;object-fit:cover}
+  .final-text{position:relative;text-align:center;z-index:5;padding:0 16px}
+  .final-text h2{font-weight:400;font-size:clamp(40px,6vw,80px);line-height:.95}
+  .final-text p{margin-top:.5em;font-style:italic;color:var(--paper-dim);font-size:clamp(19px,2vw,26px)}
+  .final-text .final-sign{margin-top:1em;font-family:var(--mono);font-style:normal;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--paper)}
+  .floaters{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+  .floaters span{position:absolute;bottom:-30px;color:var(--cherry-2);opacity:0;animation:rise linear infinite}
+  @keyframes rise{0%{transform:translateY(0) rotate(0);opacity:0}10%{opacity:.7}100%{transform:translateY(-110svh) rotate(40deg);opacity:0}}
+  footer{text-align:center;padding:40px 0 60px}
+
+  @media (max-width:820px){
+    body{font-size:18px}
+    .hero{grid-template-columns:1fr}
+    .hero-photo{width:100%}
+    .hero-photo::after{background:linear-gradient(180deg,transparent 30%,rgba(15,13,12,.5) 58%,var(--ink) 92%)}
+    .hero-text{grid-column:1;padding:0 16px 12vh}
+    .distance{grid-template-columns:1fr;padding:16vh 16px;gap:64px}
+    .moments header{padding:0 16px}
+    .reel{padding:34px 16px 10px;gap:18px}
+    .frame{width:72vw}
+    .you{padding:12vh 12px 16vh}
+    .clip{grid-template-columns:1fr;padding:14vh 16px;justify-items:center;text-align:center;gap:50px}
+    .letter{padding:16vh 16px}
+    .time{padding:18vh 16px 16vh}
+    .ticker{padding:12px 18px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .grain,.gate-btn::before,.gate-btn svg,.scroll-hint i,.envelope .seal{animation:none!important}
+  }
+</style>
+</head>
+<body class="locked">
+<div class="grain" aria-hidden="true"></div>
+<div class="progress" aria-hidden="true"></div>
+
+<!-- ЗАСТАВКА -->
+<div class="gate" id="gate">
+  <div class="gate-half gate-top"></div><div class="gate-half gate-bot"></div>
+  <div class="gate-inner">
+    <span class="mono">04.12.2025 → 04.12.2026</span>
+    <h2><span data-cfg="name"></span>,<em>це для тебе</em></h2>
+    <button class="gate-btn" id="openBtn" aria-label="Відкрити">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 2.9 4.5 6.6 4.5c2.2 0 3.6 1.3 4.4 2.6.8-1.3 2.2-2.6 4.4-2.6 3.7 0 5.7 3.9 4.2 7.3C19.5 16.4 12 21 12 21z"/></svg>
+      <span class="mono">відкрити</span>
+    </button>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-photo"><img src="media/hero.jpg" alt="Ми удвох під червоним деревом"></div>
+  <div class="hero-text">
+    <span class="mono" data-cfg="dateLabel"></span>
+    <h1 class="split-ch"><span class="l1">Наш</span><span class="l2">рік</span></h1>
+    <p class="lead" data-cfg="heroLine"></p>
+  </div>
+  <div class="scroll-hint mono" aria-hidden="true">гортай<i></i></div>
+</section>
+
+<!-- ЧАС -->
+<section class="time">
+  <div class="marquee" aria-hidden="true">Мілка · 365 · Мілка · 365 · Мілка · 365 · Мілка · 365 ·</div>
+  <div class="big" id="days">0</div>
+  <div class="unit">днів разом</div>
+  <div class="ticker mono" aria-live="off">
+    <span><b id="tH">0</b><small>год</small></span>
+    <span><b id="tM">00</b><small>хв</small></span>
+    <span><b id="tS">00</b><small>сек</small></span>
+  </div>
+  <p class="sub" data-cfg="counterLine"></p>
+  <div class="stats">
+    <div><b data-cfg="km"></b><span class="mono">км між нами</span></div>
+    <div><b>∞</b><span class="mono">дзвінків</span></div>
+    <div><b>1</b><span class="mono">ти</span></div>
+  </div>
+</section>
+
+<!-- ВІДСТАНЬ -->
+<section class="distance">
+  <div>
+    <h2 class="h2 split-w">Навіть <em>через екран</em> ти найкраще в&nbsp;моєму дні</h2>
+    <p class="fade" data-cfg="distanceText"></p>
+    <svg class="route" viewBox="0 0 600 190" aria-hidden="true">
+      <path class="base" d="M40 150 C 170 10, 430 10, 560 150"/>
+      <path class="draw" id="routePath" d="M40 150 C 170 10, 430 10, 560 150"/>
+      <circle cx="40" cy="150" r="6"/><circle cx="560" cy="150" r="6"/>
+      <text x="40" y="182" text-anchor="middle">я</text><text x="560" y="182" text-anchor="middle">ти</text>
+      <g class="heart" id="routeHeart"><path transform="translate(-12,-12)" d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 2.9 4.5 6.6 4.5c2.2 0 3.6 1.3 4.4 2.6.8-1.3 2.2-2.6 4.4-2.6 3.7 0 5.7 3.9 4.2 7.3C19.5 16.4 12 21 12 21z"/></g>
+    </svg>
+  </div>
+  <div class="phone-wrap">
+    <div class="ring"></div><div class="ring"></div>
+    <div class="phone"><img src="media/call.jpg" alt="Наш відеодзвінок" width="554" height="1200"></div>
+  </div>
+</section>
+
+<!-- КАДРИ -->
+<section class="moments" id="moments">
+  <div class="moments-inner">
+    <header>
+      <h2 class="h2 split-w">Кадри, які я <em>не&nbsp;віддам</em></h2>
+      <span class="count"><b id="cur">01</b> / 10</span>
+    </header>
+    <div class="reel" id="reel">
+      <figure class="frame" style="--r:-2deg"><div class="img"><img src="media/station.jpg" alt="" style="object-position:50% 45%"></div><figcaption><span class="mono">кадр 01</span></figcaption></figure>
+      <figure class="frame" style="--r:1.5deg"><div class="img"><img src="media/hug.jpg" alt=""></div><figcaption><span class="mono">кадр 02</span><span data-cfg="cap1"></span></figcaption></figure>
+      <figure class="frame" style="--r:-1deg"><div class="img"><img src="media/househug.jpg" alt="" style="object-position:50% 45%"></div><figcaption><span class="mono">кадр 03</span></figcaption></figure>
+      <figure class="frame" style="--r:2deg"><div class="img"><img src="media/cinema.jpg" alt=""></div><figcaption><span class="mono">кадр 04</span><span data-cfg="cap2"></span></figcaption></figure>
+      <figure class="frame" style="--r:-1.5deg"><div class="img"><img src="media/cinema2.jpg" alt="" style="object-position:50% 35%"></div><figcaption><span class="mono">кадр 05</span></figcaption></figure>
+      <figure class="frame" style="--r:1deg"><div class="img"><img src="media/mcd.jpg" alt="" style="object-position:50% 40%"></div><figcaption><span class="mono">кадр 06</span></figcaption></figure>
+      <figure class="frame" style="--r:-2deg"><div class="img"><img src="media/car.jpg" alt=""></div><figcaption><span class="mono">кадр 07</span><span data-cfg="cap3"></span></figcaption></figure>
+      <figure class="frame" style="--r:1.5deg"><div class="img"><img src="media/carry.jpg" alt="" style="object-position:50% 40%"></div><figcaption><span class="mono">кадр 08</span></figcaption></figure>
+      <figure class="frame" style="--r:-1deg"><div class="img"><img src="media/chaos.jpg" alt=""></div><figcaption><span class="mono">кадр 09</span><span data-cfg="cap4"></span></figcaption></figure>
+      <figure class="frame" style="--r:2deg"><div class="img"><img src="media/hero.jpg" alt="" style="object-position:50% 40%"></div><figcaption><span class="mono">кадр 10</span><span data-cfg="cap5"></span></figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- ТИ -->
+<section class="you">
+  <div class="you-cols" id="youCols"></div>
+</section>
+
+<!-- ВІДЕО -->
+<section class="clip">
+  <h2 class="h2 split-w">Будь-яке відео, яке я знімаю з&nbsp;тобою,&nbsp;— <em>не&nbsp;крінж</em></h2>
+  <div class="vid" id="vid">
+    <video src="media/cortisol.mp4" poster="media/cortisol-poster.jpg" playsinline muted loop preload="metadata"></video>
+    <button class="sound" id="sound" aria-pressed="false"><i></i><span>звук</span></button>
+  </div>
+</section>
+
+<!-- ЛИСТ -->
+<section class="letter" id="letter">
+  <h2 class="h2 split-w">Тобі <em>лист</em></h2>
+  <button class="envelope" id="envelope" aria-expanded="false" aria-controls="paper">
+    <span class="body"></span><span class="flap"></span><span class="seal">Б</span>
+    <span class="hint mono">натисни, щоб відкрити</span>
+  </button>
+  <div class="paper" id="paper" aria-hidden="true"></div>
+</section>
+
+<!-- ФІНАЛ -->
+<section class="final" id="final">
+  <div class="floaters" id="floaters" aria-hidden="true"></div>
+  <div class="heartbox" id="heartbox"></div>
+  <div class="final-text" id="finalText">
+    <h2>З річницею, <em data-cfg="name"></em></h2>
+    <p data-cfg="finalLine"></p>
+    <p class="final-sign" data-cfg="finalSign"></p>
+  </div>
+</section>
+<footer class="mono">далі буде ♥</footer>
+
+<script src="vendor/gsap.min.js"></script>
+<script src="vendor/ScrollTrigger.min.js"></script>
+<script>
+/* =====================================================================
+   CONFIG — усі тексти тут. Те, що в [дужках], треба замінити.
+   ===================================================================== */
+const CONFIG = {
+  name: "Мілко",
+  startDate: "2025-12-04",
+  dateLabel: "04.12.2025 — назавжди",
+  heroLine: "Рік, за який я жодного разу не пошкодував.",
+  counterLine: "І кожен із них я обрав би ще раз.",
+  km: "[км]",
+  distanceText: "Відстань — це просто цифра в навігаторі. Я рахую не кілометри, а дні до нашої наступної зустрічі.",
+  cap1: "той момент, коли нарешті обійнялись",
+  cap2: "кіно, яке я не пам'ятаю, бо дивився на тебе",
+  cap3: "найсерйозніші люди в цьому авто",
+  cap4: "хаос, який я люблю",
+  cap5: "мій диплом — і ти поруч",
+  letter: [
+    "[Тут буде твій лист. Напиши його своїми словами — я допоможу відшліфувати.]",
+    "[Другий абзац.]",
+  ],
+  sign: "Твій Богдан",
+  finalLine: "Це тільки перший рік.",
+  finalSign: "Твій Богдан",
+};
+
+const YOU = [["cap",1050,1400],["mirror",720,1200],["book",607,1200],["dark",1200,1200],["dog",686,1200]];
+const HEART = ["station","hug","househug","cinema","cinema2","mcd","car","carry","chaos","hero","cap","mirror","book","dark","dog","call"];
+
+/* ---------- тексти ---------- */
+const isPh = s => /\[.*\]/.test(s);
+document.querySelectorAll("[data-cfg]").forEach(el => {
+  const v = CONFIG[el.dataset.cfg]; if (v == null) return;
+  el.textContent = v; if (isPh(v)) el.classList.add("ph");
+});
+const paper = document.getElementById("paper");
+CONFIG.letter.forEach(t => { const p = document.createElement("p"); p.textContent = t; if (isPh(t)) p.classList.add("ph"); paper.appendChild(p); });
+const sg = document.createElement("p"); sg.className = "sign"; sg.textContent = CONFIG.sign; paper.appendChild(sg);
+
+const params = new URLSearchParams(location.search);
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches || !window.gsap || params.has("static");
+if (reduce) document.documentElement.classList.add("static");
+
+/* ---------- розбивка заголовків ---------- */
+function splitWords(el){
+  const walk = node => {
+    [...node.childNodes].forEach(n => {
+      if (n.nodeType === 3) {
+        const frag = document.createDocumentFragment();
+        n.textContent.split(/([ \t\n]+)/).forEach(part => {
+          if (!part) return;
+          if (/^[ \t\n]+$/.test(part)) { frag.appendChild(document.createTextNode(" ")); return; }
+          const w = document.createElement("span"); w.className = "w";
+          const i = document.createElement("span"); i.textContent = part; w.appendChild(i); frag.appendChild(w);
+        });
+        n.replaceWith(frag);
+      } else if (n.nodeType === 1 && !n.classList.contains("w")) walk(n);
+    });
+  };
+  walk(el);
+  return el.querySelectorAll(".w > span");
+}
+function splitChars(el){
+  el.querySelectorAll(".l1,.l2").forEach(line => {
+    const t = line.textContent; line.textContent = "";
+    const wrap = document.createElement("span"); wrap.className = "w";
+    [...t].forEach(c => { const s = document.createElement("span"); s.className = "ch"; s.textContent = c; wrap.appendChild(s); });
+    line.appendChild(wrap);
+  });
+  return el.querySelectorAll(".ch");
+}
+
+/* ---------- колонки «ти» ---------- */
+const youCols = document.getElementById("youCols");
+function buildYou(){
+  const n = innerWidth < 820 ? 2 : 3;
+  youCols.style.setProperty("--cols", n); youCols.innerHTML = "";
+  const cols = Array.from({length:n}, () => { const c = document.createElement("div"); c.className = "col"; youCols.appendChild(c); return c; });
+  YOU.forEach(([name, w, h], i) => {
+    const f = document.createElement("figure");
+    f.innerHTML = `<img src="media/${name}.jpg" alt="" loading="lazy" width="${w}" height="${h}">`;
+    cols[i % n].appendChild(f);
+  });
+  return cols;
+}
+let cols = buildYou();
+
+/* ---------- серце з фото ---------- */
+const heartbox = document.getElementById("heartbox");
+const N = 22;
+const pieces = [];
+for (let i = 0; i < N; i++) {
+  const d = document.createElement("div"); d.className = "hp";
+  d.innerHTML = `<img src="media/thumbs/${HEART[i % HEART.length]}.jpg" alt="" loading="lazy">`;
+  heartbox.appendChild(d); pieces.push(d);
+}
+function heartPoints(S){
+  // рівномірно по довжині контуру, щоб фото не злипались у кінчику
+  const M = 600, raw = [], acc = [0];
+  for (let k = 0; k <= M; k++) {
+    const t = (k / M) * Math.PI * 2;
+    raw.push([16 * Math.pow(Math.sin(t), 3), -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t))]);
+    if (k) acc.push(acc[k-1] + Math.hypot(raw[k][0] - raw[k-1][0], raw[k][1] - raw[k-1][1]));
+  }
+  const L = acc[M], pts = [];
+  for (let i = 0, k = 0; i < N; i++) {
+    const target = (i / N) * L;
+    while (acc[k] < target) k++;
+    const [x, y] = raw[k];
+    pts.push({ x: S/2 + x / 17 * S * 0.46, y: S * 0.5 + (y - 2.5) / 17 * S * 0.46, r: (Math.sin(i * 7.3) * 9) });
+  }
+  return pts;
+}
+function sizeHeart(){
+  const S = Math.min(innerWidth * 0.92, innerHeight * 0.6, 640);
+  heartbox.style.setProperty("--S", S + "px");
+  document.getElementById("finalText").style.setProperty("--S", S + "px");
+  heartbox.style.setProperty("--T", Math.round(S * 0.16) + "px");
+  return heartPoints(S);
+}
+let pts = sizeHeart();
+function placeHeartStatic(){ pieces.forEach((p,i) => { p.style.transform = `translate(${pts[i].x}px,${pts[i].y}px) rotate(${pts[i].r}deg)`; }); }
+
+/* ---------- плаваючі сердечка ---------- */
+const fl = document.getElementById("floaters");
+for (let i = 0; i < 14; i++) {
+  const s = document.createElement("span"); s.textContent = "♥";
+  s.style.left = (Math.random() * 100) + "%";
+  s.style.fontSize = (10 + Math.random() * 16) + "px";
+  s.style.animationDuration = (9 + Math.random() * 9) + "s";
+  s.style.animationDelay = (-Math.random() * 14) + "s";
+  fl.appendChild(s);
+}
+
+/* ---------- живий таймер ---------- */
+const [sy, sm, sd] = CONFIG.startDate.split("-").map(Number);
+const start = new Date(sy, sm - 1, sd);
+const daysTotal = Math.max(0, Math.floor((Date.now() - start) / 864e5));
+const elD = document.getElementById("days"), tH = document.getElementById("tH"), tM = document.getElementById("tM"), tS = document.getElementById("tS");
+const pad = n => String(n).padStart(2, "0");
+function tick(){
+  const ms = Math.max(0, Date.now() - start);
+  const h = Math.floor(ms / 36e5), m = Math.floor(ms / 6e4) % 60, s = Math.floor(ms / 1e3) % 60;
+  tH.textContent = h.toLocaleString("uk-UA"); tM.textContent = pad(m); tS.textContent = pad(s);
+}
+tick(); setInterval(tick, 1000);
+
+/* ---------- відео ---------- */
+const vid = document.getElementById("vid"), video = vid.querySelector("video"), soundBtn = document.getElementById("sound");
+new IntersectionObserver(es => es.forEach(e => { e.isIntersecting ? video.play().catch(()=>{}) : video.pause(); }), { threshold: .45 }).observe(vid);
+soundBtn.addEventListener("click", () => {
+  video.muted = !video.muted; soundBtn.classList.toggle("on", !video.muted);
+  soundBtn.setAttribute("aria-pressed", !video.muted); if (video.paused) video.play().catch(()=>{});
+});
+
+/* ---------- лист ---------- */
+const env = document.getElementById("envelope");
+function burst(){
+  const r = env.querySelector(".seal").getBoundingClientRect();
+  const host = document.getElementById("letter"), hr = host.getBoundingClientRect();
+  for (let i = 0; i < 22; i++) {
+    const b = document.createElement("span"); b.className = "burst"; b.textContent = "♥";
+    b.style.left = (r.left - hr.left + r.width/2 - 8) + "px"; b.style.top = (r.top - hr.top + r.height/2 - 12) + "px";
+    host.appendChild(b);
+    const a = Math.random() * Math.PI * 2, d = 90 + Math.random() * 200;
+    if (reduce) { b.remove(); continue; }
+    gsap.fromTo(b, { scale: .3, opacity: 1 }, { x: Math.cos(a) * d, y: Math.sin(a) * d - 60, scale: .6 + Math.random(), rotation: (Math.random() - .5) * 90, opacity: 0, duration: 1.4 + Math.random() * .6, ease: "expo.out", onComplete: () => b.remove() });
+  }
+}
+env.addEventListener("click", () => {
+  if (env.classList.contains("open")) return;
+  env.classList.add("open"); env.setAttribute("aria-expanded", "true"); paper.setAttribute("aria-hidden", "false");
+  env.querySelector(".hint").textContent = "";
+  if (reduce) { paper.style.height = "auto"; paper.style.padding = "48px clamp(26px,5vw,56px)"; return; }
+  burst();
+  const padV = Math.min(60, Math.max(36, innerWidth * .05));
+  gsap.set(paper, { height: "auto", paddingTop: padV, paddingBottom: padV });
+  const target = paper.offsetHeight;
+  gsap.set(paper, { height: 0, paddingTop: 0, paddingBottom: 0 });
+  gsap.set(paper.children, { y: 24, opacity: 0 });
+  gsap.timeline()
+    .to(env.querySelector(".seal"), { scale: 0, duration: .35, ease: "back.in(2)" })
+    .to(env.querySelector(".flap"), { rotateX: 180, duration: .8, ease: "power3.inOut" }, "<.1")
+    .to(paper, { height: target, paddingTop: padV, paddingBottom: padV, marginTop: -30, duration: 1.1, ease: "expo.inOut" })
+    .set(paper, { height: "auto" })
+    .to(paper.children, { y: 0, opacity: 1, stagger: .18, duration: .9, ease: "expo.out" }, "-=.5")
+    .add(() => { ScrollTrigger.refresh(); paper.scrollIntoView({ behavior: "smooth", block: "center" }); });
+});
+
+/* ---------- заставка ---------- */
+const gate = document.getElementById("gate");
+function unlock(){ document.body.classList.remove("locked"); if (window.ScrollTrigger) ScrollTrigger.refresh(); }
+
+/* =====================================================================
+   АНІМАЦІЇ
+   ===================================================================== */
+if (reduce) {
+  gate.remove(); unlock(); elD.textContent = daysTotal; placeHeartStatic();
+  document.getElementById("cur").textContent = "10";
+} else {
+  gsap.registerPlugin(ScrollTrigger);
+  if (params.has("nogate")) { gate.remove(); }
+
+  const heroChars = splitChars(document.querySelector(".hero h1"));
+  const heroIntro = gsap.timeline({ paused: true })
+    .fromTo(".hero-photo", { clipPath: "inset(100% 0 0 0)" }, { clipPath: "inset(0% 0 0 0)", duration: 1.6, ease: "expo.inOut" })
+    .fromTo(".hero-photo img", { scale: 1.35 }, { scale: 1, duration: 2.2, ease: "expo.out" }, "<.2")
+    .from(heroChars, { yPercent: 115, rotate: 6, stagger: .05, duration: 1.3, ease: "expo.out" }, "-=1.6")
+    .from(".hero-text .mono, .hero .lead, .scroll-hint", { opacity: 0, y: 18, stagger: .12, duration: 1, ease: "expo.out" }, "-=1");
+
+  if (params.has("nogate")) { heroIntro.progress(1); unlock(); }
+  else {
+    gsap.from(".gate-inner > *", { opacity: 0, y: 26, stagger: .15, duration: 1.2, ease: "expo.out", delay: .2 });
+    document.getElementById("openBtn").addEventListener("click", () => {
+      gsap.timeline({ onComplete: () => gate.remove() })
+        .to(".gate-inner", { opacity: 0, scale: .96, duration: .5, ease: "power2.in" })
+        .to(".gate-top", { yPercent: -100, duration: 1.2, ease: "expo.inOut" }, "-=.1")
+        .to(".gate-bot", { yPercent: 100, duration: 1.2, ease: "expo.inOut" }, "<")
+        .add(() => heroIntro.play(), "-=.9");
+      unlock();
+    }, { once: true });
+  }
+
+  gsap.to(".progress", { scaleX: 1, ease: "none", scrollTrigger: { start: 0, end: "max", scrub: .3 } });
+
+  /* hero паралакс */
+  gsap.to(".hero-photo img", { yPercent: -12, ease: "none", scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true } });
+  gsap.to(".hero-text", { yPercent: -30, opacity: 0, ease: "none", scrollTrigger: { trigger: ".hero", start: "40% top", end: "bottom top", scrub: true } });
+
+  /* заголовки по словах */
+  document.querySelectorAll(".split-w").forEach(h => {
+    const words = splitWords(h);
+    gsap.from(words, { yPercent: 110, stagger: .06, duration: 1.2, ease: "expo.out", scrollTrigger: { trigger: h, start: "top 85%" } });
+  });
+  document.querySelectorAll(".fade").forEach(el => gsap.from(el, { opacity: 0, y: 30, duration: 1.2, ease: "expo.out", scrollTrigger: { trigger: el, start: "top 88%" } }));
+
+  /* час */
+  gsap.fromTo(".marquee", { xPercent: 0 }, { xPercent: -40, ease: "none", scrollTrigger: { trigger: ".time", start: "top bottom", end: "bottom top", scrub: true } });
+  const cnt = { v: 0 };
+  ScrollTrigger.create({ trigger: ".time", start: "top 70%", once: true, onEnter: () => {
+    gsap.to(cnt, { v: daysTotal, duration: 2.4, ease: "expo.out", onUpdate: () => elD.textContent = Math.round(cnt.v) });
+  }});
+  gsap.from(".time .unit, .ticker, .time .sub, .stats > div", { opacity: 0, y: 30, stagger: .12, duration: 1.1, ease: "expo.out", scrollTrigger: { trigger: ".time", start: "top 60%" } });
+
+  /* маршрут я → ти */
+  const path = document.getElementById("routePath"), heart = document.getElementById("routeHeart");
+  const len = path.getTotalLength();
+  gsap.set(path, { strokeDasharray: len, strokeDashoffset: len });
+  const placeHeart = p => { const pt = path.getPointAtLength(p * len); heart.setAttribute("transform", `translate(${pt.x},${pt.y}) scale(${1 + Math.sin(p * Math.PI) * .35})`); };
+  placeHeart(0);
+  gsap.to(path, { strokeDashoffset: 0, ease: "none", scrollTrigger: { trigger: ".route", start: "top 85%", end: "bottom 35%", scrub: .6, onUpdate: s => placeHeart(s.progress) } });
+
+  /* телефон «дзвонить» */
+  gsap.from(".phone", { y: 80, rotate: 10, opacity: 0, duration: 1.4, ease: "expo.out", scrollTrigger: { trigger: ".phone-wrap", start: "top 80%" } });
+  gsap.to(".phone", { rotate: 3, ease: "none", scrollTrigger: { trigger: ".distance", start: "top bottom", end: "bottom top", scrub: true } });
+  gsap.fromTo(".ring", { scale: .9, opacity: .8 }, { scale: 1.25, opacity: 0, duration: 2.2, ease: "expo.out", stagger: .7, repeat: -1, repeatDelay: .6 });
+
+  /* кадри — горизонтальна стрічка */
+  const reel = document.getElementById("reel"), frames = [...reel.children], cur = document.getElementById("cur");
+  const dist = () => Math.max(0, reel.scrollWidth - innerWidth);
+  const skew = gsap.quickTo(reel, "skewX", { duration: .5, ease: "power3" });
+  gsap.to(reel, {
+    x: () => -dist(), ease: "none",
+    scrollTrigger: {
+      trigger: "#moments", pin: true, scrub: .8, start: "top top", end: () => "+=" + dist(), invalidateOnRefresh: true, anticipatePin: 1,
+      onUpdate: s => {
+        cur.textContent = pad(Math.min(frames.length, 1 + Math.round(s.progress * (frames.length - 1))));
+        skew(gsap.utils.clamp(-6, 6, s.getVelocity() / -400));
+      },
+      onLeave: () => skew(0), onLeaveBack: () => skew(0),
+    }
+  });
+  frames.forEach(f => {
+    gsap.to(f.querySelector("img"), { scale: 1, ease: "none", scrollTrigger: { trigger: "#moments", start: "top top", end: () => "+=" + dist(), scrub: true } });
+  });
+  gsap.from(frames, { y: 120, opacity: 0, rotate: 8, stagger: .08, duration: 1.3, ease: "expo.out", scrollTrigger: { trigger: "#moments", start: "top 70%" } });
+
+  /* ти — колонки з паралаксом */
+  function animYou(){
+    const speeds = [-90, 70, -50];
+    cols.forEach((c, i) => gsap.to(c, { y: speeds[i % 3], ease: "none", scrollTrigger: { trigger: ".you", start: "top bottom", end: "bottom top", scrub: true } }));
+    youCols.querySelectorAll("figure").forEach(f => {
+      gsap.fromTo(f, { clipPath: "inset(100% 0 0 0)" }, { clipPath: "inset(0% 0 0 0)", duration: 1.4, ease: "expo.inOut", scrollTrigger: { trigger: f, start: "top 90%" } });
+      gsap.fromTo(f.querySelector("img"), { scale: 1.3 }, { scale: 1, duration: 1.8, ease: "expo.out", scrollTrigger: { trigger: f, start: "top 90%" } });
+    });
+  }
+  animYou();
+
+  /* відео */
+  gsap.fromTo(".vid", { scale: .78, rotate: -5, borderRadius: 60 }, { scale: 1, rotate: 0, borderRadius: 22, ease: "none", scrollTrigger: { trigger: ".clip", start: "top bottom", end: "center center", scrub: true } });
+
+  /* лист */
+  gsap.from(".envelope", { y: 80, rotate: -4, opacity: 0, duration: 1.4, ease: "expo.out", scrollTrigger: { trigger: ".envelope", start: "top 85%" } });
+
+  /* фінал — фото збираються в серце */
+  const scatter = pieces.map(() => ({ x: (Math.random() - .5) * innerWidth * 1.6, y: (Math.random() - .5) * innerHeight * 1.6, r: (Math.random() - .5) * 120 }));
+  const finalTl = gsap.timeline({ scrollTrigger: { trigger: "#final", pin: true, start: "top top", end: "+=140%", scrub: 1, invalidateOnRefresh: true } });
+  pieces.forEach((p, i) => {
+    finalTl.fromTo(p,
+      { x: () => pts[i].x + scatter[i].x, y: () => pts[i].y + scatter[i].y, rotation: scatter[i].r, scale: .4, opacity: 0 },
+      { x: () => pts[i].x, y: () => pts[i].y, rotation: pts[i].r, scale: 1, opacity: 1, duration: 1, ease: "power3.out" },
+      (i % N) * 0.035);
+  });
+  finalTl.from("#finalText > *", { opacity: 0, y: 30, stagger: .15, duration: .5, ease: "power2.out" }, ">-.1")
+         .to(heartbox, { scale: 1.04, duration: .4, ease: "sine.inOut", yoyo: true, repeat: 1 }, ">-.2");
+
+  /* перерахунок при зміні розміру */
+  let lastW = innerWidth;
+  addEventListener("resize", () => {
+    pts = sizeHeart();
+    if (Math.abs(innerWidth - lastW) > 80 && (innerWidth < 820) !== (lastW < 820)) {
+      ScrollTrigger.getAll().forEach(st => { if (st.trigger && st.trigger.closest && st.trigger.closest(".you")) st.kill(); });
+      cols = buildYou(); animYou();
+    }
+    lastW = innerWidth; ScrollTrigger.refresh();
+  });
+  addEventListener("load", () => ScrollTrigger.refresh());
+  let rT; const softRefresh = () => { clearTimeout(rT); rT = setTimeout(() => ScrollTrigger.refresh(), 150); };
+  document.querySelectorAll("img").forEach(i => { if (!i.complete) i.addEventListener("load", softRefresh, { once: true }); });
+  if (document.fonts) document.fonts.ready.then(softRefresh);
+}
+</script>
+</body>
+</html>
