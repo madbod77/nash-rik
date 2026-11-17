@@ -150,6 +150,7 @@
   .envelope:not(.open) .seal{animation:beat 1.6s ease-in-out infinite}
   .paper{max-width:640px;margin:0 auto;background:var(--paper);color:#2b211c;text-align:left;padding:0 clamp(26px,5vw,56px);height:0;overflow:hidden;font-size:clamp(20px,2vw,23px);line-height:1.6;box-shadow:0 40px 80px -40px #000;position:relative;z-index:3}
   .paper p+p{margin-top:1em}
+  .paper{font-variant-numeric:lining-nums}
   .paper .sign{margin-top:1.6em;font-style:italic;text-align:right}
   .burst{position:absolute;pointer-events:none;z-index:20;font-size:22px;color:var(--cherry-2)}
 
@@ -470,16 +471,20 @@ const CONFIG = {
   cap8: "хочу так носити тебе 24/7 — якщо ти завжди будеш такою маленькою в моїх руках",
   cap5: "важливий день, на якому мені було приємно, що ти була поруч",
   letter: [
-    "[Тут буде твій лист. Напиши його своїми словами — я допоможу відшліфувати.]",
-    "[Другий абзац.]",
+    "Цей рік був найкращий і найспокійніший — завдяки тобі. Я не переживав майже ні за що, тільки коли ти сумувала і злилась. Але я настільки ним задоволений і хочу сказати тобі неймовірне дякую.",
+    "За кожне повідомлення, за кожне голосове, за кожну прогулянку, за кожен поцілунок, за кожну мить з тобою. За те, що мене підтримуєш, за те, що завжди поруч, за те, що швидко миримось, і за те, що ти в мене є.",
+    "Ти найкрасивіша, наймиліша, наймаленькіша, найпрекрасніша, найпривабливіша, найдобріша, найчуйніша та найкраща дівчинка на світі. Я дуже радий, що ти в мене є.",
+    "Побажання на наступний рік тільки одне: жити в мирі, любові і єдності. Я тебе обожнюю, хочу це робити кожен день — і буду. Це єдине моє побажання.",
+    "А, ну і ще одне: частіше тебе бачити — не тільки по телефону, а дивитись на твоє найкрасивіше личко з найкрасивішими очками, найакуратнішим носиком, найкрасивішими вушками і найкрасивішою плямочкою на лівій ніжці, яка додає тобі +1000 до милості.",
+    "Обожнюю тебе, зайчику. Дякую тобі, що ти в мене є 💘",
   ],
   sign: "Твій Богдан",
   nextMeet: "",   // дата наступної зустрічі, напр. "2026-12-20T18:00" — тоді в розділі про відстань зʼявиться відлік
   openWhen: [
     ["сумуєш за мною", "Набери мене. О будь-якій годині. Я теж сумую — просто не завжди кажу про це перший."],
-    ["не можеш заснути", "Заплющ очі й уяви, що я поруч і тримаю тебе за руку. А зранку я напишу тобі перший."],
+    ["не можеш заснути", "Закрий очі й уяви, що я тебе гладжу і ти солодко-солодко спатунькаєш."],
     ["сердишся на мене", "Маєш право. Але навіть сердита ти — моя найулюбленіша людина. Давай миритись?"],
-    ["хочеш усміхнутись", "Згадай наш косплей-фест: найсерйозніші обличчя в тому авто були наші."],
+    ["хочеш усміхнутись", "Згадай, як ми разом були на косплей-фесті: ти переживала за виступ, а ми з Нікою принесли тобі KFC."],
   ],
   askLine: "Будеш зі мною й наступний рік?",
   askYes: "Тоді до наступного 4 грудня.",
@@ -823,9 +828,12 @@ env.addEventListener("click", () => {
   const target = paper.offsetHeight;
   gsap.set(paper, { height: 0, paddingTop: 0, paddingBottom: 0 });
   gsap.set(paper.children, { y: 24, opacity: 0 });
+  const head = document.querySelector("#letter .h2");
+  const lift = Math.max(0, env.offsetHeight * .58 + 22 - (env.getBoundingClientRect().top - head.getBoundingClientRect().bottom));
   gsap.timeline()
     .to(env.querySelector(".seal"), { scale: 0, duration: .35, ease: "back.in(2)" })
     .to(env.querySelector(".flap"), { rotateX: 180, duration: .8, ease: "power3.inOut" }, "<.1")
+    .to(head, { y: -lift, duration: .8, ease: "power3.inOut" }, "<")
     .to(paper, { height: target, paddingTop: padV, paddingBottom: padV, marginTop: -30, duration: 1.1, ease: "expo.inOut" })
     .set(paper, { height: "auto" })
     .to(paper.children, { y: 0, opacity: 1, stagger: .18, duration: .9, ease: "expo.out" }, "-=.5")
