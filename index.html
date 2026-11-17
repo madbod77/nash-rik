@@ -172,6 +172,8 @@
     .time{padding:18vh 16px 16vh}
     .ticker{padding:12px 18px}
   }
+  /* на телефоні шум статичний — анімований гальмує гортання */
+  @media (hover:none){ .grain{animation:none;inset:0} }
   @media (prefers-reduced-motion:reduce){
     .grain,.gate-btn::before,.gate-btn svg,.scroll-hint i,.envelope .seal{animation:none!important}
   }
@@ -382,7 +384,7 @@ function buildYou(){
   const cols = Array.from({length:n}, () => { const c = document.createElement("div"); c.className = "col"; youCols.appendChild(c); return c; });
   YOU.forEach(([name, w, h], i) => {
     const f = document.createElement("figure");
-    f.innerHTML = `<img src="media/${name}.jpg" alt="" loading="lazy" width="${w}" height="${h}">`;
+    f.innerHTML = `<img src="media/${name}.jpg" alt="" width="${w}" height="${h}">`;
     cols[i % n].appendChild(f);
   });
   return cols;
@@ -488,7 +490,7 @@ env.addEventListener("click", () => {
     .to(paper, { height: target, paddingTop: padV, paddingBottom: padV, marginTop: -30, duration: 1.1, ease: "expo.inOut" })
     .set(paper, { height: "auto" })
     .to(paper.children, { y: 0, opacity: 1, stagger: .18, duration: .9, ease: "expo.out" }, "-=.5")
-    .add(() => { ScrollTrigger.refresh(); paper.scrollIntoView({ behavior: "smooth", block: "center" }); });
+    .add(() => ScrollTrigger.refresh());
 });
 
 /* ---------- заставка ---------- */
@@ -503,6 +505,8 @@ if (reduce) {
   document.getElementById("cur").textContent = "10";
 } else {
   gsap.registerPlugin(ScrollTrigger);
+  ScrollTrigger.config({ ignoreMobileResize: true, autoRefreshEvents: "visibilitychange,DOMContentLoaded,load" });
+  const touch = matchMedia("(hover: none)").matches;
   if (params.has("nogate")) { gate.remove(); }
 
   const heroChars = splitChars(document.querySelector(".hero h1"));
@@ -566,10 +570,10 @@ if (reduce) {
   gsap.to(reel, {
     x: () => -dist(), ease: "none",
     scrollTrigger: {
-      trigger: "#moments", pin: true, scrub: .8, start: "top top", end: () => "+=" + dist(), invalidateOnRefresh: true, anticipatePin: 1,
+      trigger: "#moments", pin: true, scrub: touch ? .3 : .8, start: "top top", end: () => "+=" + dist(), invalidateOnRefresh: true, anticipatePin: 1,
       onUpdate: s => {
         cur.textContent = pad(Math.min(frames.length, 1 + Math.round(s.progress * (frames.length - 1))));
-        skew(gsap.utils.clamp(-6, 6, s.getVelocity() / -400));
+        if (!touch) skew(gsap.utils.clamp(-6, 6, s.getVelocity() / -400));
       },
       onLeave: () => skew(0), onLeaveBack: () => skew(0),
     }
@@ -598,7 +602,7 @@ if (reduce) {
 
   /* фінал — фото збираються в серце */
   const scatter = pieces.map(() => ({ x: (Math.random() - .5) * innerWidth * 1.6, y: (Math.random() - .5) * innerHeight * 1.6, r: (Math.random() - .5) * 120 }));
-  const finalTl = gsap.timeline({ scrollTrigger: { trigger: "#final", pin: true, start: "top top", end: "+=140%", scrub: 1, invalidateOnRefresh: true } });
+  const finalTl = gsap.timeline({ scrollTrigger: { trigger: "#final", pin: true, start: "top top", end: "+=140%", scrub: touch ? .4 : 1, invalidateOnRefresh: true, anticipatePin: 1 } });
   pieces.forEach((p, i) => {
     finalTl.fromTo(p,
       { x: () => pts[i].x + scatter[i].x, y: () => pts[i].y + scatter[i].y, rotation: scatter[i].r, scale: .4, opacity: 0 },
@@ -608,20 +612,23 @@ if (reduce) {
   finalTl.from("#finalText > *", { opacity: 0, y: 30, stagger: .15, duration: .5, ease: "power2.out" }, ">-.1")
          .to(heartbox, { scale: 1.04, duration: .4, ease: "sine.inOut", yoyo: true, repeat: 1 }, ">-.2");
 
-  /* перерахунок при зміні розміру */
-  let lastW = innerWidth;
+  /* перераховуємо лише коли реально змінилась ширина (поворот екрана),
+     а не коли на телефоні ховається/з'являється адресний рядок */
+  let lastW = innerWidth, rzT;
   addEventListener("resize", () => {
-    pts = sizeHeart();
-    if (Math.abs(innerWidth - lastW) > 80 && (innerWidth < 820) !== (lastW < 820)) {
-      ScrollTrigger.getAll().forEach(st => { if (st.trigger && st.trigger.closest && st.trigger.closest(".you")) st.kill(); });
-      cols = buildYou(); animYou();
-    }
-    lastW = innerWidth; ScrollTrigger.refresh();
+    clearTimeout(rzT);
+    rzT = setTimeout(() => {
+      if (Math.abs(innerWidth - lastW) < 2) return;
+      pts = sizeHeart();
+      if ((innerWidth < 820) !== (lastW < 820)) {
+        ScrollTrigger.getAll().forEach(st => { if (st.trigger && st.trigger.closest && st.trigger.closest(".you")) st.kill(); });
+        cols = buildYou(); animYou();
+      }
+      lastW = innerWidth; ScrollTrigger.refresh();
+    }, 200);
   });
   addEventListener("load", () => ScrollTrigger.refresh());
-  let rT; const softRefresh = () => { clearTimeout(rT); rT = setTimeout(() => ScrollTrigger.refresh(), 150); };
-  document.querySelectorAll("img").forEach(i => { if (!i.complete) i.addEventListener("load", softRefresh, { once: true }); });
-  if (document.fonts) document.fonts.ready.then(softRefresh);
+  if (document.fonts) document.fonts.ready.then(() => { if (scrollY < innerHeight) ScrollTrigger.refresh(); });
 }
 </script>
 </body>
